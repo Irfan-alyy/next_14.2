@@ -1,7 +1,6 @@
- 
 import type { AuthOptions } from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
-import {prisma} from "./prisma"
+import { prisma } from "./prisma";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { Adapter } from "next-auth/adapters";
 
@@ -13,40 +12,39 @@ export const authOptions: AuthOptions = {
       clientSecret: process.env.GITHUB_SECRET!,
     }),
   ],
+  pages: {
+    signIn: "/auth/signin",
+    verifyRequest: "/auth/verify-request",
+    error: "/auth/error",
+  },
   session: {
     strategy: "jwt",
-    maxAge: 60 * 60 * 24 * 7
+    maxAge: 60 * 60 * 24 * 7,
   },
   secret: process.env.NEXTAUTH_SECRET,
-  pages:{
-    signIn:"/auth/signin",
-    error:"/auth/error",
-    verifyRequest:"/auth/verify-request"
-  },
-    callbacks: {
-      async jwt({token,user}) {
-            if(user){
-                token.id= user.id,
-                token.name=user.name
-                token.type= (user as any).type
-                token.image=user.image
-            }
-            return token
-        },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        (token.id = user.id), (token.name = user.name);
+        token.type = (user as any).type;
+        token.image = user.image;
+      }
+      return token;
+    },
     async session({ session, token }) {
       // Add custom fields from DB
       if (session.user) {
-        session={
+        session = {
           ...session,
-          user:{
-            id:token.id as string,
-            type:token.type as string,
-            name:token.name,
-            image:token.image as string
-          }
-        }
+          user: {
+            id: token.id as string,
+            type: token.type as string,
+            name: token.name,
+            image: token.image as string,
+          },
+        };
       }
       return session;
     },
-  }
+  },
 };
