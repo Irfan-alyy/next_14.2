@@ -78,7 +78,11 @@ export const authOptions: AuthOptions = {
       return session;
     },
     async redirect({ url, baseUrl }) {
-      console.log("Redirect URL:", url, "Base URL:", baseUrl); // Debug redirect
+      console.log("Redirect URL:", url, "Base URL:", baseUrl);
+      if (url.includes("error=OAuthCallback")) {
+        console.log("Handling OAuthCallback error");
+        return `${baseUrl}/auth/error?error=OAuthCallback`;
+      }
       return url.startsWith(baseUrl) ? url : baseUrl;
     },
   },
