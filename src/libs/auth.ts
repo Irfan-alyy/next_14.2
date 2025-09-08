@@ -1,11 +1,13 @@
 import type { AuthOptions } from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
-import GoogleProvider from "next-auth/providers/google"
-import {prisma} from "./prisma"
+import GoogleProvider from "next-auth/providers/google";
+import { prisma } from "./prisma";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { Adapter } from "next-auth/adapters";
-
+import EmailProvider from "next-auth/providers/email";
+import { sendEmail } from "@/utils/sendVerificationEmail";
 export const authOptions: AuthOptions = {
+  debug: true,
   adapter: PrismaAdapter(prisma) as Adapter,
   providers: [
     GitHubProvider({
@@ -15,6 +17,22 @@ export const authOptions: AuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_ID!,
       clientSecret: process.env.GOOGLE_SECRET!,
+    }),
+    EmailProvider({
+      server: process.env.EMAIL_SERVER,
+      from: process.env.EMAIL_FROM,
+      sendVerificationRequest({
+        identifier: email,
+        url,
+        provider: { server, from },
+      }) {
+        sendEmail({
+          identifier: email,
+          url,
+          provider: { server, from },
+          theme: { brandColor: "#ffd06bff", buttonText: "Click To sign In" },
+        });
+      },
     }),
   ],
   pages: {
@@ -28,6 +46,14 @@ export const authOptions: AuthOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      try {
+        return true; // Allow sign-in
+      } catch (error) {
+        console.error("Sign-in error:", error);
+        return "/auth/error?error=SignInError"; // Force redirect to error page
+      }
+    },
     async jwt({ token, user }) {
       if (user) {
         (token.id = user.id), (token.name = user.name);
@@ -50,6 +76,10 @@ export const authOptions: AuthOptions = {
         };
       }
       return session;
+    },
+    async redirect({ url, baseUrl }) {
+      console.log("Redirect URL:", url, "Base URL:", baseUrl); // Debug redirect
+      return url.startsWith(baseUrl) ? url : baseUrl;
     },
   },
 };

@@ -19,7 +19,7 @@ model User {
   email         String?         @unique
   emailVerified DateTime?
   image         String?
-  type          String        @default("user")
+  type          String?        @default("user")
   accounts      Account[]
   sessions      Session[]
   // Optional for WebAuthn support

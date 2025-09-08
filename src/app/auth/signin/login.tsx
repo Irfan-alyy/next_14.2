@@ -113,7 +113,7 @@ const AuthPage: React.FC = () => {
     e.preventDefault();
     setLoading({ provider: "email", loading: true });
     console.log("Continue with Magic Link clicked");
-    signIn("nodemailer", { email: email, callbackUrl: "/" });
+    signIn("email", { email: email, callbackUrl: "/" });
   };
 
   return (
