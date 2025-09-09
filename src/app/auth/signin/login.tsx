@@ -117,7 +117,7 @@ const AuthPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 to-purple-600 p-4 font-inter">
+    <div className="min-h-screen flex items-center justify-center  p-4 font-inter" style={{ background: 'linear-gradient(135deg, #d1f5ffff 0%, #f3e7e9 100%)' }}>
       <AnimatePresence mode="wait">
         <motion.div
           variants={cardVariants}
