@@ -1,7 +1,22 @@
-import { createTransport } from "nodemailer"
+import { createTransport, Transport, TransportOptions } from "nodemailer"
+import SMTPTransport from "nodemailer/lib/smtp-transport"
 
 
-export async function sendEmail(params:any) {
+interface Theme{
+  buttonText:string,
+  brandColor:string
+}
+interface SendMail{
+  identifier: string,
+  url: string,
+  theme:Theme,
+  provider:{
+    server:TransportOptions | Transport<unknown, TransportOptions> | string,
+    from:string
+  }
+}
+
+export async function sendEmail(params:SendMail) {
   const { identifier, url, provider, theme } = params
   const { host } = new URL(url)
   // NOTE: You are not required to use `nodemailer`, use whatever you want.
@@ -13,7 +28,7 @@ export async function sendEmail(params:any) {
     text: text({ url, host }),
     html: html({ url, host, theme }),
   })
-  const failed = result.rejected.concat((result as any).pending).filter(Boolean)
+  const failed = result.rejected.concat((result as SMTPTransport.SentMessageInfo).pending).filter(Boolean)
   if (failed.length) {
     throw new Error(`Email(s) (${failed.join(", ")}) could not be sent`)
   }
@@ -27,7 +42,7 @@ export async function sendEmail(params:any) {
  *
  * @note We don't add the email address to avoid needing to escape it, if you do, remember to sanitize it!
  */
-function html(params: { url: string, host: string, theme:any }) {
+function html(params: { url: string, host: string, theme:{brandColor:string, buttonText:string}}) {
   const { url, host, theme } = params
 
   const escapedHost = host.replace(/\./g, "&#8203;.")

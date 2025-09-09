@@ -1,10 +1,9 @@
 "use client"; // This directive is necessary for client-side interactivity in Next.js App Router
 
 import React, { useState } from "react";
-import { Mail, LogIn } from "lucide-react"; // Importing icons from lucide-react
+import { Mail } from "lucide-react"; // Importing icons from lucide-react
 import { motion, AnimatePresence, Variants } from "framer-motion"; // Importing framer-motion
 import { signIn } from "next-auth/react";
-import { Loader } from "lucide-react";
 import LoadingSpinner from "@/components/ui/spinners";
 
 // Inline SVG for Google Logo
