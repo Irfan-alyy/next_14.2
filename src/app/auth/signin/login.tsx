@@ -1,10 +1,11 @@
 "use client"; // This directive is necessary for client-side interactivity in Next.js App Router
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Mail } from "lucide-react"; // Importing icons from lucide-react
 import { motion, AnimatePresence, Variants } from "framer-motion"; // Importing framer-motion
 import { signIn } from "next-auth/react";
 import LoadingSpinner from "@/components/ui/spinners";
+import { useRouter, useSearchParams } from "next/navigation";
 
 // Inline SVG for Google Logo
 const GoogleIcon: React.FC = () => (
@@ -69,6 +70,23 @@ const itemVariants: Variants = {
 };
 
 const AuthPage: React.FC = () => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const error = searchParams.get("error");
+
+  useEffect(() => {
+    if(error){
+
+      console.warn("Auth error detected:", error);
+      // You could log to analytics here
+      
+      if (error === 'OAuthSignin') {
+        // Maybe show different message or log specific event
+      }
+      router.push(`/auth/error?error=${encodeURIComponent(error)}`);
+    }
+  }, [error, router]);
+
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState<{
     provider: string;
@@ -94,6 +112,13 @@ const AuthPage: React.FC = () => {
   //   }
   //   // In a real app, you'd typically redirect or show a success/error message
   // };
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-gray-500">Redirecting to error page...</p>
+      </div>
+    );
+  }
 
   const handleGoogleSignIn = () => {
     setLoading({ provider: "google", loading: true });
@@ -116,7 +141,12 @@ const AuthPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center  p-4 font-inter" style={{ background: 'linear-gradient(135deg, #d1f5ffff 0%, #f3e7e9 100%)' }}>
+    <div
+      className="min-h-screen flex items-center justify-center  p-4 font-inter"
+      style={{
+        background: "linear-gradient(135deg, #d1f5ffff 0%, #f3e7e9 100%)",
+      }}
+    >
       <AnimatePresence mode="wait">
         <motion.div
           variants={cardVariants}

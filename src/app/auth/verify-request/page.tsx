@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion, Variants } from 'framer-motion';
 import { Mail } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
@@ -10,6 +11,19 @@ const cardVariants: Variants = {
 };
 
 const VerifyRequestPage: React.FC = () => {
+    const searchParams = useSearchParams();
+  const email = searchParams.get("email") || "";
+  console.log(email);
+ let decodedEmail = 'your email';
+  try {
+    decodedEmail = decodeURIComponent(email);
+  } catch (e) {
+    console.warn('Failed to decode email:', email);
+    decodedEmail = email;
+  }
+  console.log(decodedEmail);
+  
+  
   return (
     <div className="min-h-screen bg-gray-50 font-inter">
       <main>
@@ -40,7 +54,7 @@ const VerifyRequestPage: React.FC = () => {
             >
               <Mail className="h-12 w-12 text-indigo-600 mx-auto mb-4" />
               <p className="text-gray-700 mb-4">
-                A sign-in link has been sent to your email address. Please check your inbox (and spam/junk folder) to continue.
+                A sign-in link has been sent to your email address '<span className='font-semibold'>{decodedEmail}</span>'. Please check your inbox (and spam/junk folder) to continue.
               </p>
               <p className="text-gray-500 text-sm">
                 Didn’t receive the email? Try signing in again or contact support.

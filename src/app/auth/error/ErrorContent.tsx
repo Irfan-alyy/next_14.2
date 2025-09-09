@@ -1,31 +1,49 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { useSearchParams } from 'next/navigation';
-import { motion, Variants } from 'framer-motion';
-import { AlertCircle } from 'lucide-react';
-import Link from 'next/link';
+import React from "react";
+import { useSearchParams } from "next/navigation";
+import { motion, Variants } from "framer-motion";
+import { AlertCircle } from "lucide-react";
+import Link from "next/link";
 
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
 
 const buttonVariants: Variants = {
   hidden: { opacity: 0, scale: 0.9 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.5, type: 'spring', stiffness: 120 } },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.5, type: "spring", stiffness: 120 },
+  },
   hover: { scale: 1.05 },
 };
 
 const ErrorPage: React.FC = () => {
   const searchParams = useSearchParams();
-  const error = searchParams.get('error') || 'Unknown Error';
+  const error = searchParams.get("error") || "Unknown Error";
 
   const errorMessages: Record<string, string> = {
-    Configuration: 'There was a problem with the server configuration. Please try again later.',
-    AccessDenied: 'Access denied. You do not have permission to sign in.',
-    Verification: 'The sign-in link is invalid or has expired. Please request a new one.',
-    Default: 'An unexpected error occurred. Please try again.',
+    OAuthSignin:
+      "Failed to initiate sign-in. Please try again or use a different provider.",
+    OAuthCallback:
+      "Failed to complete sign-in. The provider did not return valid data.",
+    AccessDenied: "Access denied. You do not have permission to sign in.",
+    Verification:
+      "The sign-in link is invalid or has expired. Please request a new one.",
+    EmailSendError:
+      "Failed to send sign-in email. Please try again later or contact support.",
+    EmailCreateAccount:
+      "Unable to create account. Please try again or contact support.",
+    EmailSignin:
+      "Failed to send sign-in link. Please check your email or try again.",
+    CredentialsSignin:
+      "Sign in failed. Please check your credentials and try again.",
+    SessionRequired: "You must be signed in to access this page.",
+    Default:
+      "An unexpected error occurred. Please try again or contact support.",
   };
 
   const message = errorMessages[error] || errorMessages.Default;
@@ -35,10 +53,33 @@ const ErrorPage: React.FC = () => {
       <main>
         <section className="relative bg-gradient-to-r from-indigo-600 to-purple-700 text-white py-10 overflow-hidden rounded-b-lg shadow-xl">
           <div className="absolute inset-0 z-0 opacity-10">
-            <svg className="w-full h-full" fill="none" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
-              <circle cx="20" cy="20" r="15" fill="currentColor" className="text-indigo-400"></circle>
-              <circle cx="80" cy="50" r="25" fill="currentColor" className="text-purple-400"></circle>
-              <circle cx="50" cy="80" r="10" fill="currentColor" className="text-indigo-300"></circle>
+            <svg
+              className="w-full h-full"
+              fill="none"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="xMidYMid slice"
+            >
+              <circle
+                cx="20"
+                cy="20"
+                r="15"
+                fill="currentColor"
+                className="text-indigo-400"
+              ></circle>
+              <circle
+                cx="80"
+                cy="50"
+                r="25"
+                fill="currentColor"
+                className="text-purple-400"
+              ></circle>
+              <circle
+                cx="50"
+                cy="80"
+                r="10"
+                fill="currentColor"
+                className="text-indigo-300"
+              ></circle>
             </svg>
           </div>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">

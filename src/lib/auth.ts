@@ -21,17 +21,24 @@ export const authOptions: AuthOptions = {
     EmailProvider({
       server: process.env.EMAIL_SERVER,
       from: process.env.EMAIL_FROM,
-      sendVerificationRequest({
+      async sendVerificationRequest({
         identifier: email,
         url,
         provider: { server, from },
       }) {
-        sendEmail({
-          identifier: email,
-          url,
-          provider: { server, from },
-          theme: { brandColor: "#ffd06bff", buttonText: "Click To sign In" },
-        });
+        try {
+          await sendEmail({
+            identifier: email,
+            url,
+            provider: { server, from },
+            theme: { brandColor: "#ffd06bff", buttonText: "Click To sign In" },
+          });
+        } catch (error) {
+          if (error instanceof Error && error.message === "EMAIL_SEND_FAILED") {
+            throw new Error("EmailSendError"); // Custom error key
+          }
+          throw error; // Re-throw unexpected errors
+        }
       },
     }),
   ],
@@ -46,17 +53,9 @@ export const authOptions: AuthOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async signIn() {
-      try {
-        return true; // Allow sign-in
-      } catch (error) {
-        console.error("Sign-in error:", error);
-        return "/auth/error?error=SignInError"; // Force redirect to error page
-      }
-    },
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id 
+        token.id = user.id;
         token.name = user.name;
         token.type = user.type;
         token.image = user.image;
@@ -77,14 +76,6 @@ export const authOptions: AuthOptions = {
         };
       }
       return session;
-    },
-    async redirect({ url, baseUrl }) {
-      console.log("Redirect URL:", url, "Base URL:", baseUrl);
-      if (url.includes("error=OAuthCallback")) {
-        console.log("Handling OAuthCallback error");
-        return `${baseUrl}/auth/error?error=OAuthCallback`;
-      }
-      return url.startsWith(baseUrl) ? url : baseUrl;
     },
   },
 };
