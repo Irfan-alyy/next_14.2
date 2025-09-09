@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import AuthPage from "./login";
+import { Suspense } from "react";
 
 
 export const metadata: Metadata = {
@@ -10,6 +11,9 @@ export const metadata: Metadata = {
 
 export default function LoginPage(){
   return(
-    <AuthPage/>
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
+      <AuthPage/>
+
+    </Suspense>
   )
 }
