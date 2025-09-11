@@ -36,7 +36,7 @@ const Footer = () => {
               <div className="p-2 bg-primary/10 rounded-xl">
                 <ChefHat className="w-6 h-6 text-primary" />
               </div>
-              <span className="text-xl font-bold text-gradient">FlavorHub</span>
+              <span className="text-xl font-bold text-gradient">Eats Store</span>
             </div>
             <p className="text-muted-foreground mb-6 max-w-md">
               Discover amazing flavors from the finest restaurants in your city. Premium dining experiences delivered fresh to your door.
@@ -109,7 +109,7 @@ const Footer = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div className="flex items-center space-x-3">
               <Mail className="w-5 h-5 text-primary" />
-              <span className="text-muted-foreground">hello@flavorhub.com</span>
+              <span className="text-muted-foreground">hello@eatstore.com</span>
             </div>
             <div className="flex items-center space-x-3">
               <Phone className="w-5 h-5 text-primary" />
@@ -123,7 +123,7 @@ const Footer = () => {
 
           <div className="flex flex-col md:flex-row justify-between items-center pt-6 border-t border-border/30">
             <p className="text-sm text-muted-foreground">
-              © 2024 FlavorHub. All rights reserved.
+              © 2024 Eats Store. All rights reserved.
             </p>
             <p className="text-sm text-muted-foreground mt-2 md:mt-0">
               Crafted for culinary excellence
