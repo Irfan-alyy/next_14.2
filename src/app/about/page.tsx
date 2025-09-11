@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Users, Award, Clock, Heart, Target, Zap } from 'lucide-react';
 
+
 export default function AboutPage(){
   const stats = [
     { number: '10,000+', label: 'Happy Customers', icon: Users },
@@ -123,9 +124,17 @@ export default function AboutPage(){
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="relative"
+              className="relative w-full "
             >
-              <div className="aspect-square bg-gradient-to-br from-primary/20 to-secondary/30 rounded-3xl"></div>
+              <div className="aspect-square w-full flex items-center  bg-gradient-to-br from-primary/90 to-secondary/100 rounded-3xl ">
+            
+
+                <img
+                src={"/assets/hero-restaurant.jpg"}
+                alt={"Hero Image"}
+                className='object-cover rounded-3xl'
+                />
+                </div>
             </motion.div>
           </div>
         </div>

@@ -49,17 +49,15 @@ export default async function StorePage({ params }: StorePageProps) {
   }
 
   return (
-    <main className="min-h-screen font-serif" style={{
-      background: 'linear-gradient(135deg, #e0f2f7 0%, #f3e7e9 100%)'
-    }}>
+    <main className="min-h-screen font-serif ">
       {/* Hero Section - This can remain a server component */}
-      <header className="relative w-full h-64 bg-sky-300 flex items-center justify-center text-center overflow-hidden shadow-md">
-        <div className="absolute inset-0 gradient:bg-sky-500 to:bg-sky-100 opacity-80 z-0"></div>
+      <header className="relative w-full h-64  flex items-center justify-center text-center overflow-hidden shadow-md">
+        <div className="absolute inset-0  opacity-80 z-0"></div>
         <div className="relative z-10 px-4 text-white">
-          <h1 className="text-5xl md:text-6xl font-bold tracking-wide drop-shadow-lg">
+          <h1 className="text-5xl md:text-6xl mt-10 font-bold text-gradient tracking-wide drop-shadow-lg">
             {menu.title?.translations?.en_us || "The Menu"}
           </h1>
-          <p className="text-xl md:text-2xl font-sans opacity-90 mt-2">
+          <p className="text-xl text-black md:text-2xl font-sans opacity-90 mt-2">
             A curated selection of our finest dishes.
           </p>
         </div>
