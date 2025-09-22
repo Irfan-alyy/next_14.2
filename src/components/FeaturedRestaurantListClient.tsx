@@ -118,6 +118,7 @@ export default function RestaurantListClient({ stores, error }: RestaurantListCl
                       whileHover={{ y: -8 }}
                       transition={{ duration: 0.3 }}
                     >
+                      <Link href={`/store/${store?.store_id}/menu`}>
                       <Card className="card-restaurant group overflow-hidden h-full">
                         <div className="relative h-48 overflow-hidden">
                           {store.raw_hero_url ? (
@@ -161,6 +162,8 @@ export default function RestaurantListClient({ stores, error }: RestaurantListCl
                           </div>
                         </CardContent>
                       </Card>
+                      </Link>
+
                     </motion.div>
                   ))}
             </motion.div>
