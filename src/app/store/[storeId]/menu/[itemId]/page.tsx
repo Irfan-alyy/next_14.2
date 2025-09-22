@@ -31,15 +31,13 @@ export default async function ItemPage({ params }: ItemPageProps) {
   const { storeId, itemId } = params;
 
   // The server component handles all the data fetching logic.
-  let menu: { items?: Item[] } = {};
   let item: Item | null = null;
   let error: string | null = null;
 
   try {
-    // This API call happens on the server, not in the user's browser.
-    menu = await uberFetch(`/v2/eats/stores/${storeId}/menus`);
-    // Find the specific item from the fetched menu
-    item = menu.items?.find((i) => i.id === itemId) || null;
+    const response= await fetch(`${process.env.API_BASE_URL}/api/uber_eats/${storeId}/items/${itemId}`)
+    const data= await response.json();
+    item= data?.item
   } catch (err) {
     console.error("Failed to fetch item details:", err);
     error = "Failed to load item details. Please try again later.";

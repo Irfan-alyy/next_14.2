@@ -42,12 +42,13 @@ export default async function StorePage({ params }: StorePageProps) {
   const { storeId } = params;
 
   try {
-    menu = await uberFetch(`/v2/eats/stores/${storeId}/menus`);
+    const response = await fetch(`${process.env.API_BASE_URL}/api/uber_eats/${storeId}/items`);
+    const data= await response.json()
+    menu= data?.menu
   } catch (err) {
     console.error("Failed to fetch menu:", err);
     error = "Failed to load menu. Please try again later.";
   }
-
   return (
     <main className="min-h-screen font-serif ">
       {/* Hero Section - This can remain a server component */}

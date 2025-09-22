@@ -34,8 +34,9 @@ export default async function Home() {
   let error: string | null = null;
 
   try {
-    const data = await uberFetch("/v1/eats/stores");
-    stores = data.stores || [];
+    const response = await fetch(`${process.env.API_BASE_URL}/api/uber_eats`);
+    const data = (await response.json())
+    stores= data?.stores
   } catch (err) {
     console.log(err);
     error = "Failed to load restaurants. Please try again later.";
