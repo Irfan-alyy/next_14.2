@@ -76,10 +76,17 @@ const Navigation = () => {
               Cart
             </Button>
             {data?.user ? (
+              <>
               <Button onClick={()=>signOut()} variant="outline" size="sm" className="hover-lift">
                 <User className="w-4 h-4 mr-2" />
                 Sign Out
               </Button>
+              <Link href="/dashboard">
+              <Button variant="outline" size="sm" className="hover-lift">
+                Dashboard
+              </Button>
+              </Link>
+              </>
             ) : (
               <Link href="/auth/signin">
                 <Button variant="outline" size="sm" className="hover-lift">
