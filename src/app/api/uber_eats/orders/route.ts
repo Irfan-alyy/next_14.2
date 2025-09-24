@@ -27,29 +27,29 @@ export async function GET(req: NextRequest) {
   }
 }
 
-const getOrders = async (stores) => {
-  // console.log("stores", stores);
-  const orderPromises =
-    stores?.stores?.map(async (store) => {
-      try {
-        const response = await uberFetch(
-          `/v1/delivery/store/${store?.store_id}/orders?page_size=100`
-        );
-        console.log("response", response);
-        if (response?.data && response.data.length > 0) {
-          return response.data; // returns array of orders for this store
-        }
-        return []; // return empty array if no orders, to avoid undefined
-      } catch (error) {
-        console.error(
-          `Failed to fetch orders for store ${store?.store_id}:`,
-          error
-        );
-        return []; // or throw if you want to fail fast
-      }
-    }) || [];
+// const getOrders = async (stores) => {
+//   // console.log("stores", stores);
+//   const orderPromises =
+//     stores?.stores?.map(async (store) => {
+//       try {
+//         const response = await uberFetch(
+//           `/v1/delivery/store/${store?.store_id}/orders?page_size=100`
+//         );
+//         console.log("response", response);
+//         if (response?.data && response.data.length > 0) {
+//           return response.data; // returns array of orders for this store
+//         }
+//         return []; // return empty array if no orders, to avoid undefined
+//       } catch (error) {
+//         console.error(
+//           `Failed to fetch orders for store ${store?.store_id}:`,
+//           error
+//         );
+//         return []; // or throw if you want to fail fast
+//       }
+//     }) || [];
 
-  let orders = await Promise.all(orderPromises);
-  orders = orders.flat();
-  return orders;
-};
+//   let orders = await Promise.all(orderPromises);
+//   orders = orders.flat();
+//   return orders;
+// };

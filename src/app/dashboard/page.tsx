@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ListChecks, Users, LineChart, Settings, Home, UtensilsCrossed, LogOut } from "lucide-react";
+import { ListChecks, Users, LineChart, Settings, UtensilsCrossed, LogOut } from "lucide-react";
 
 export default function DashboardPage() {
   const dashboardItems = [
@@ -13,25 +13,25 @@ export default function DashboardPage() {
       title: "Menu Items",
       description: "View and edit your restaurant's full menu.",
       icon: <UtensilsCrossed size={24} />,
-      href: "/dashboard/menu-items",
+      href: "/dashboard",
     },
     {
       title: "Users",
       description: "Manage staff, delivery drivers, and customers.",
       icon: <Users size={24} />,
-      href: "/dashboard/users",
+      href: "/dashboard",
     },
     {
       title: "Analytics",
       description: "Review sales data and performance metrics.",
       icon: <LineChart size={24} />,
-      href: "/dashboard/analytics",
+      href: "/dashboard",
     },
     {
       title: "Settings",
       description: "Configure your store and account settings.",
       icon: <Settings size={24} />,
-      href: "/dashboard/settings",
+      href: "/dashboard",
     },
   ];
 
@@ -42,7 +42,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen font-serif flex" style={gradientBackground}>
       {/* Sidebar Navigation */}
-      <aside className="w-64 bg-white p-6 shadow-xl flex flex-col justify-between">
+      <aside className="pt-20 w-64 bg-white p-6 shadow-xl flex flex-col justify-between">
         <div>
           <h2 className="text-2xl font-bold text-stone-800 mb-8">
             Admin Panel

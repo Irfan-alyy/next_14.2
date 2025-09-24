@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { uberFetch } from "@/lib/uber";
 import RestaurantListClient from "@/components/FeaturedRestaurantListClient";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";

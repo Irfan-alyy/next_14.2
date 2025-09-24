@@ -1,7 +1,6 @@
 // app/store/[storeId]/item/[itemId]/page.tsx
 
 // This is a Server Component. It doesn't have 'use client' and runs on the server.
-import { uberFetch } from "@/lib/uber";
 import ItemClient from "@/components/ItemClient"; // We import the Client Component here
 import Link from "next/link";
 

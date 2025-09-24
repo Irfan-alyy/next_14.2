@@ -1,4 +1,3 @@
-import { uberFetch } from "@/lib/uber";
 import MenuClient from "@/components/MenuClient";
 
 // TypeScript interfaces to match your API data structure
