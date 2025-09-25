@@ -104,3 +104,96 @@ model webhook_events {
   @@index([resource_id])
   @@index([webhook_received_at])
 }
+
+model Order {
+  id                String    @id @map("_id")
+  displayId         String    @unique
+  currentState      String    // we'll store raw state for now (e.g., "DENIED")
+  type              String
+  brand             String
+  placedAt          DateTime  @db.Date
+
+  storeId           String   
+  store             Store     @relation(fields: [storeId], references: [id])
+
+  eaterId           String   
+  eater             Eater     @relation(fields: [eaterId], references: [id])
+
+  cartId            String    @unique
+  cart              Cart      @relation(fields: [cartId], references: [id])
+
+  paymentId         String    @unique
+  payment           Payment   @relation(fields: [paymentId], references: [id])
+
+  packagingId       String?   @unique
+  packaging         Packaging? @relation(fields: [packagingId], references: [id])
+
+  lastEventId       String?   // for idempotency
+  createdAt         DateTime  @default(now()) @db.Date
+
+  @@map("orders")
+}
+
+model Store {
+  id   String @id @map("_id")
+  name String
+  orders Order[]
+  @@map("stores")
+}
+
+model Eater {
+  id        String @id @map("_id")
+  firstName String
+  lastName  String?
+  phone     String?
+  phoneCode String?
+  orders    Order[]
+  @@map("eaters")
+}
+
+model Cart {
+  id              String      @id @map("_id")
+  fulfillmentIssues Json?
+  items           CartItem[]
+  order           Order?
+  @@map("carts")
+}
+
+model CartItem {
+  id                   String @id @map("_id")
+  title                String
+  externalData         String?
+  quantity             Int
+  instanceId           String?
+  eaterId              String?
+
+  unitPriceAmount      Int
+  unitPriceCurrency    String
+  totalPriceAmount     Int
+  totalPriceCurrency   String
+  baseUnitPriceAmount  Int
+  baseTotalPriceAmount Int
+
+  cartId               String
+  cart                 Cart   @relation(fields: [cartId], references: [id])
+  @@map("cart_items")
+}
+
+
+model Payment {
+  id                 String @id @map("_id")
+  totalAmount        Int
+  totalCurrency      String
+  subTotalAmount     Int
+  subTotalCurrency   String
+  accounting         Json?
+  order              Order?
+  @@map("payments")
+}
+
+model Packaging {
+  id            String @id @map("_id")
+  shouldInclude Boolean
+  order         Order?
+  @@map("packaging")
+}
