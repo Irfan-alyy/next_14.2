@@ -7,10 +7,9 @@ import OrderDetailModal from "./order_detail";
 
 // Hardcoded data from the provided JSON for demonstration purposes.
 // In a real app, this would be fetched from an API using getServerSideProps, Server Components, or client-side fetching.
-const DUMMY_STORE_ID = "84f93bb9-e8cf-4f81-b594-a2880792194d";
 
 // Order interface for type safety
-interface Order {
+export interface Order {
   id: string;
   display_id: string;
   state: string; // Changed from current_state to state
@@ -95,7 +94,6 @@ export default function OrdersPage() {
       `/api/uber_eats/orders?store_id=${storeId}&page_size=10&next_page_token=${token}`
     );
     const dat = await res.json();
-
     setStoresOrders((prev) =>
       prev?.map((store: any) =>
         store.store_id === storeId
@@ -116,16 +114,34 @@ export default function OrdersPage() {
     }, 3000);
   };
 
-  const handleAccept = async (orderId: string) => {
-    const response = await fetch(`/api/uber_eats/orders/${orderId}/accept`, {
-      method: "POST",
+  // const handleAccept = async (orderId: string) => {
+  //   const response = await fetch(`/api/uber_eats/orders/${orderId}/accept`, {
+  //     method: "POST",
+  //   });
+  //   if (response.ok) {
+  //     showNotification(`Accepted order ${orderId}`, "success");
+  //     // Update the order state locally to reflect the change
+  //     setOrders(
+  //       orders.map((order: Order) =>
+  //         order.id === orderId ? { ...order, state: "ACCEPTED" } : order
+  //       )
+  //     );
+  //   } else {
+  //     showNotification("Error Occured Accepting order", "error");
+  //   }
+  // };
+
+  const handleAction = async (orderId: string, newState:string) => {
+    const response = await fetch(`/api/uber_eats/orders/${orderId}/`, {
+      method: "PATCH",
+      body:JSON.stringify({newState})
     });
     if (response.ok) {
-      showNotification(`Accepted order ${orderId}`, "success");
+      showNotification(`${newState==="ACCEPTED"? "Accepted":"Rejected"} order ${orderId}`, "success");
       // Update the order state locally to reflect the change
       setOrders(
         orders.map((order: Order) =>
-          order.id === orderId ? { ...order, state: "ACCEPTED" } : order
+          order.id === orderId ? { ...order, state: newState } : order
         )
       );
     } else {
@@ -133,35 +149,37 @@ export default function OrdersPage() {
     }
   };
 
-  const handleReject = async (orderId: string) => {
-    const response = await fetch(`/api/uber_eats/orders/${orderId}/reject`, {
-      method: "POST",
-    });
-    if (response.ok) {
-      showNotification(`Rejected order ${orderId}`, "success");
-      // Update the order state locally
-      setOrders(
-        orders.map((order: Order) =>
-          order.id === orderId ? { ...order, state: "FAILED" } : order
-        )
-      );
-    } else {
-      showNotification("Error Occured Rejecting order", "error");
-    }
-  };
+  // const handleReject = async (orderId: string) => {
+  //   const response = await fetch(`/api/uber_eats/orders/${orderId}/reject`, {
+  //     method: "POST",
+  //   });
+  //   if (response.ok) {
+  //     showNotification(`Rejected order ${orderId}`, "success");
+  //     // Update the order state locally
+  //     setOrders(
+  //       orders.map((order: Order) =>
+  //         order.id === orderId ? { ...order, state: "FAILED" } : order
+  //       )
+  //     );
+  //   } else {
+  //     showNotification("Error Occured Rejecting order", "error");
+  //   }
+  // };
 
   const handleDetails = (orderId: string) => {
     setCurrentOrderDetail(orderId);
     setShowOrderDetailsModal(true);
   };
 
-const filteredStoresOrders = storesOrders?.map(store => ({
+console.log(storesOrders);
+  
+const filteredStoresOrders = storesOrders ? storesOrders?.map(store => ({
   ...store,
   orders:
     filter === "ALL"
       ? store.orders
       : store.orders.filter((o: Order) => o.state === filter)
-}));
+})): [];
 
   const gradientBackground = {
     background: "linear-gradient(135deg, #e0f2f7 0%, #f3e7e9 100%)",
@@ -290,13 +308,13 @@ const filteredStoresOrders = storesOrders?.map(store => ({
                           {order.state === "OFFERED" && (
                             <>
                               <button
-                                onClick={() => handleAccept(order?.id)}
+                                onClick={() => handleAction(order?.id, "ACCEPTED")}
                                 className="flex items-center justify-center h-10 px-5 rounded-full text-sm font-medium bg-green-500 text-white hover:bg-green-600 transition-colors"
                               >
                                 <Check size={18} className="mr-1" /> Accept
                               </button>
                               <button
-                                onClick={() => handleReject(order?.id)}
+                                onClick={() => handleAction(order?.id, "REJECTED")}
                                 className="flex items-center justify-center h-10 px-5 rounded-full text-sm font-medium bg-red-500 text-white hover:bg-red-600 transition-colors"
                               >
                                 <X size={18} className="mr-1" /> Reject
