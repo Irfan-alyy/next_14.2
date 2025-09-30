@@ -6,8 +6,8 @@ export async function GET(req: NextRequest) {
   const page_size = searchParams.get("page_size") || "10"; // default to 10 per page
   const store_id = searchParams.get("store_id");
   const next_page_token = searchParams.get("next_page_token");
-
-  console.log("params", page_size, store_id);
+  const state= searchParams.get("state") || ""
+  // console.log("params", page_size, store_id, state);
 
   if(store_id && next_page_token){
     try {
@@ -21,10 +21,10 @@ export async function GET(req: NextRequest) {
   try {
       const response = await uberFetch("/v1/eats/stores");
       const stores= response?.stores
-      console.log("all stores",stores);
+      // console.log("all stores",stores);
       const result = await Promise.all(
         stores.map(async (store:any) => {
-          const dat = await uberFetch(`/v1/delivery/store/${store.store_id}/orders?page_size=${page_size}`);
+          const dat = await uberFetch(`/v1/delivery/store/${store.store_id}/orders?state=${state}&expand=${state?"carts":""}&page_size=${page_size}`);                
           return {
             store_name: store.name,
             store_id: store.store_id,
@@ -35,6 +35,8 @@ export async function GET(req: NextRequest) {
       );
     return NextResponse.json(result);
   } catch (error) {
+    console.log(error);
+    
     const errorMessage =
       error instanceof Error ? error.message : "Unknown error";
     console.error("Error fetching orders:", errorMessage);
@@ -44,6 +46,7 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+
 
 // const getOrders = async (stores) => {
 //   // console.log("stores", stores);
