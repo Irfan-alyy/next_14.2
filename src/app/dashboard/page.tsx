@@ -10,10 +10,10 @@ export default function DashboardPage() {
       href: "/dashboard/orders",
     },
     {
-      title: "Menu Items",
+      title: "Kitchen",
       description: "View and edit your restaurant's full menu.",
       icon: <UtensilsCrossed size={24} />,
-      href: "/dashboard",
+      href: "/dashboard/kitchen",
     },
     {
       title: "Users",

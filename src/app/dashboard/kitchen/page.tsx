@@ -110,8 +110,8 @@ export default function KitchenOrders() {
   );
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6 flex items-center gap-2">
+    <div className="w-full flex flex-col  px-30 lg:px-40  mx-auto  mt-20">
+      <h1 className="text-3xl  font-bold mb-6 flex items-center gap-2">
         <UtensilsCrossed className="w-8 h-8 text-sky-600" /> Kitchen Display
       </h1>
 
