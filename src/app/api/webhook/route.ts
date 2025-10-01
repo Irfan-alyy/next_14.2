@@ -90,12 +90,19 @@ const handleWebhook=async(payload:any)=>{
       case "orders.notification":
         await handleCreateOrder(payload?.meta?.resource_id as string, payload?.event_id as string)
         break;
+      case "orders.cancel":
+        await handleCancel(payload?.meta?.resource_id as string)
+        break;
       default:
         return
     }
     return
 }
-
+const handleCancel=async(id:string)=>{
+await prisma.order.update({where:{id}, data:{
+  currentState:"CANCELED"
+}})
+}
 const handleCreateOrder=async (id:string, eventId:string)=>{
 
   console.log("create order called");
@@ -138,15 +145,16 @@ const storeNewOrder = async (orderData: any, eventId: string) => {
     });
 
     // 3. Payment
-    const payment = await tx.payment.create({
-      data: {
-        id: `payment_${orderData.id}`,
+    const paymentData={
         totalAmount: orderData.payment.charges.total.amount,
         totalCurrency: orderData.payment.charges.total.currency_code,
         subTotalAmount: orderData.payment.charges.sub_total.amount,
         subTotalCurrency: orderData.payment.charges.sub_total.currency_code,
         accounting: orderData.payment.accounting || {}
-      }
+      };
+      await tx.payment.upsert({where:{id:`payment_${orderData.id}`,},
+      update:{...paymentData},
+      create:{...paymentData,id: `payment_${orderData.id}`,}
     });
 
     // 4. Packaging
@@ -170,9 +178,25 @@ const storeNewOrder = async (orderData: any, eventId: string) => {
     });
 
     // 6. Cart Items (already correct)
-    if (Array.isArray(orderData.cart.items) && orderData.cart.items.length > 0) {
-      const cartItems = orderData.cart.items.map((item: any) => ({
+  // 6. Cart Items
+if (Array.isArray(orderData.cart.items) && orderData.cart.items.length > 0) {
+  for (const item of orderData.cart.items) {
+    const menuItem = await tx.menuItem.upsert({
+      where: { id: item.id }, // Uber item.id
+      create: {
         id: item.id,
+        title: item.title,
+        brand: orderData.brand, // optional, can store brand/store info
+      },
+      update: {
+        title: item.title, // if Uber updates the title later
+        brand: orderData.brand,
+      },
+    });
+    // Step 2: Create CartItem (per order, per cart)
+    await tx.cartItem.create({
+      data: {
+        id: `${item.id}_${orderData.id}`, // ensures uniqueness per order
         title: item.title,
         externalData: item.external_data || null,
         quantity: item.quantity,
@@ -184,29 +208,10 @@ const storeNewOrder = async (orderData: any, eventId: string) => {
         totalPriceCurrency: item.price.total_price.currency_code,
         baseUnitPriceAmount: item.price.base_unit_price.amount,
         baseTotalPriceAmount: item.price.base_total_price.amount,
-        cartId: cart.id
-      }));
-      await tx.cartItem.createMany({ data: cartItems });
-    }
-
-    // 7. Order
-    const order = await tx.order.create({
-      data: {
-        id: orderData.id,
-        displayId: orderData.display_id,
-        currentState: orderData.current_state,
-        type: orderData.type,
-        brand: orderData.brand,
-        placedAt: new Date(orderData.placed_at),
-        lastEventId: eventId,
-        storeId: store.id,
-        eaterId: eater.id,
         cartId: cart.id,
-        paymentId: payment.id,
-        packagingId: packagingId
-      }
+        menuItemId: menuItem.id, // 👈 link to reusable MenuItem
+      },
     });
-
-    return order;
-  });
-};
+  }
+}
+})}
