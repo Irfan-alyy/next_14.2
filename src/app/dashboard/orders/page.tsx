@@ -71,7 +71,7 @@ export default function OrdersPage() {
   const [filter, setFilter] = useState<
     "ALL" | "OFFERED" | "ACCEPTED" | "FAILED"
   >("ALL");
-  const [storesOrders, setStoresOrders] = useState();
+  const [storesOrders, setStoresOrders] = useState<any>();
   const [orders, setOrders] = useState<Array<Order>>([]);
   const [nextPageToken, setNextPageToken] = useState(null);
   const [showOrderDetailsModal, setShowOrderDetailsModal] = useState(false);
@@ -94,10 +94,10 @@ export default function OrdersPage() {
       `/api/uber_eats/orders?store_id=${storeId}&page_size=10&next_page_token=${token}`
     );
     const dat = await res.json();
-    setStoresOrders((prev) =>
+    setStoresOrders((prev:any) =>
       prev?.map((store: any) =>
         store.store_id === storeId
-          ? {
+          ? { 
               ...store,
               orders: [...store.orders, ...dat.orders],
               next_page_token: dat?.next_page_token || null,
@@ -173,7 +173,7 @@ export default function OrdersPage() {
 
 console.log(storesOrders);
   
-const filteredStoresOrders = storesOrders ? storesOrders?.map(store => ({
+const filteredStoresOrders = storesOrders ? storesOrders?.map((store:any) => ({
   ...store,
   orders:
     filter === "ALL"
