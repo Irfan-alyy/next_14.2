@@ -176,7 +176,19 @@ model CartItem {
 
   cartId               String
   cart                 Cart   @relation(fields: [cartId], references: [id])
+
+  menuItemId           String?
+  menuItem             MenuItem? @relation(fields: [menuItemId], references: [id])
+
+
   @@map("cart_items")
+}
+model MenuItem {
+  id        String   @id @map("_id")   // Uber item.id or your generated UUID
+  title     String
+  brand     String?  // optional, if you want to tie to store/brand
+  cartItems CartItem[]
+  @@map("menu_items")
 }
 
 
