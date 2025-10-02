@@ -16,6 +16,7 @@ interface Item {
   subtitle?: { translations: Translation };
   description?: { translations: Translation };
   price_info?: { price: number };
+  image_url: string | null
 }
 
 interface ItemClientProps {
@@ -51,11 +52,11 @@ export default function ItemClient({ item, storeId }: ItemClientProps) {
   const gradientBackgroundB = {
     background: 'linear-gradient(135deg, #d6f0f7ff 0%, #f3eaebff 100%)'
   };
-
+  
   return (
     <main className="min-h-screen font-serif" style={gradientBackground}>
       <div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
+        <div className="my-8">
           <Link
             href={`/store/${storeId}/menu`}
             className="inline-flex items-center text-sky-700 hover:text-sky-900 font-sans font-medium transition-colors duration-200"
@@ -101,11 +102,10 @@ export default function ItemClient({ item, storeId }: ItemClientProps) {
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
               {/* Image Section */}
-              <div className="aspect-square relative w-full rounded-2xl overflow-hidden shadow-lg">
-                <Image
-                  src="/images/placeholder-dish.jpg" // Placeholder image
+              <div className="max-h-80 flex items-center relative w-full rounded-2xl overflow-hidden shadow-lg">
+                <img
+                  src={item?.image_url || "/images/placeholder-dish.jpg"} // Placeholder image
                   alt={item.title?.translations?.en_us || "Item image"}
-                  fill
                   className="object-cover"
                 />
               </div>
@@ -115,14 +115,8 @@ export default function ItemClient({ item, storeId }: ItemClientProps) {
                   {item.title?.translations?.en_us || "Item"}
                 </h1>
                 <p className="text-stone-600 font-sans text-lg italic mb-6 leading-relaxed">
-                  {item.subtitle?.translations?.en_us || "A classic dish prepared with the finest ingredients."}
+                  {item.description?.translations?.en_us || "A classic dish prepared with the finest ingredients."}
                 </p>
-                
-                {item.description?.translations?.en_us && (
-                  <p className="text-stone-700 text-sm font-sans mb-6">
-                    {item.description.translations.en_us}
-                  </p>
-                )}
                 
                 <p className="text-3xl font-bold text-stone-800 mb-8">
                   ${((item.price_info?.price || 0) / 100).toFixed(2)}
