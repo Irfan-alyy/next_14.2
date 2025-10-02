@@ -175,6 +175,7 @@ model CartItem {
   baseUnitPriceAmount  Int
   baseTotalPriceAmount Int
   special_instructions String?
+  selected_modifier_groups Json?
 
   cartId               String
   cart                 Cart   @relation(fields: [cartId], references: [id])
