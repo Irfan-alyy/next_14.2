@@ -66,12 +66,15 @@ export async function POST(request: NextRequest) {
 }
 
 const handleWebhook = async (payload: any) => {
+    const resource_id=payload.meta.resource_id 
+           ?? payload.meta.order_id 
+           ?? payload.resource_href.split("/").pop()
   await prisma.webhook_events.create({
     data: {
       event_id: payload.event_id,
       event_type: payload.event_type,
       event_time: BigInt(payload.event_time), // ✅ Convert to BigInt
-      resource_id: payload.meta.resource_id,
+      resource_id: resource_id,
       status: payload.meta.status,
       client_id: payload.webhook_meta.client_id,
       raw_payload: payload, // Prisma handles JSON serialization
@@ -84,23 +87,47 @@ const handleWebhook = async (payload: any) => {
   switch (event_type) {
     case "orders.notification":
       await handleCreateOrder(
-        payload?.meta?.resource_id as string,
+        resource_id as string,
         payload.event_id as string
       );
       break;
+    case "delivery.state_changed":
+      await handleDeliveryStateChange(resource_id as string, payload?.meta?.status as string);
+      break;
+    case "orders.release":
+      await handleOrderRelease(resource_id as string);
+      break;
     case "orders.cancel":
-      await handleCancel(payload?.meta?.resource_id as string);
+      await handleCancel(resource_id as string);
       break;
     default:
       return;
   }
   return;
 };
+const handleDeliveryStateChange = async (id: string, state:string) => {
+  console.log("New status", state);
+  if(state.trim())
+  await prisma.order.update({
+    where: { id },
+    data: {
+      currentState: state,
+    },
+  });
+};
 const handleCancel = async (id: string) => {
   await prisma.order.update({
     where: { id },
     data: {
       currentState: "CANCELED",
+    },
+  });
+};
+const handleOrderRelease = async (id: string) => {
+  await prisma.order.update({
+    where: { id },
+    data: {
+      currentState: "READY",
     },
   });
 };
@@ -115,7 +142,7 @@ const handleCreateOrder = async (id: string, eventId: string) => {
 };
 
 const storeNewOrder = async (orderData: any, eventId: string) => {
-  // console.log("store order", orderData);
+  console.log("store order", orderData);
   return prisma.$transaction(async (tx) => {
     // 1. Store
     const store = await tx.store.upsert({
@@ -230,6 +257,9 @@ const storeNewOrder = async (orderData: any, eventId: string) => {
             menuItemId: menuItem.id,
             ...(item.special_instructions && {
               special_instructions: item.special_instructions,
+            }),
+             ...(item.selected_modifier_groups && {
+              selected_modifier_groups: item.selected_modifier_groups,
             }),
           },
         });
