@@ -139,11 +139,13 @@ export default function OrdersPage() {
     if (response.ok) {
       showNotification(`${newState==="ACCEPTED"? "Accepted":"Rejected"} order ${orderId}`, "success");
       // Update the order state locally to reflect the change
-      setOrders(
-        orders.map((order: Order) =>
-          order.id === orderId ? { ...order, state: newState } : order
-        )
-      );
+      const newOrders= storesOrders
+      newOrders.forEach(data=>{
+        data.orders=data.orders.map(order=>order.id===orderId? {...order, state: newState}: order)
+      })
+      console.log("new orders after actions", newOrders);
+      
+      setStoresOrders(newOrders);
     } else {
       showNotification("Error Occured Accepting order", "error");
     }
@@ -165,7 +167,8 @@ export default function OrdersPage() {
   //     showNotification("Error Occured Rejecting order", "error");
   //   }
   // };
-
+  console.log("orders",storesOrders);
+  
   const handleDetails = (orderId: string) => {
     setCurrentOrderDetail(orderId);
     setShowOrderDetailsModal(true);
