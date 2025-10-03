@@ -7,6 +7,23 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 // 🔥 Critical: Force this route to run in Node.js (not Edge)
 export const runtime = "nodejs";
 
+type WebhookPayload = {
+  event_id: string;
+  event_type: string;
+  event_time: string | number; // depends on API, you’re converting it to BigInt
+  resource_href?: string;
+  meta: {
+    resource_id: string;
+    order_id?: string;
+    status: string;
+  };
+  webhook_meta: {
+    client_id: string;
+  };
+  // To allow extra unknown keys
+};
+
+
 export async function POST(request: NextRequest) {
   try {
     // Get raw body as ArrayBuffer → convert to Buffer
@@ -64,10 +81,10 @@ export async function POST(request: NextRequest) {
   }
 }
 
-const handleWebhook = async (payload: any) => {
+const handleWebhook = async (payload:WebhookPayload) => {
     const resource_id=payload.meta.resource_id 
            ?? payload.meta.order_id 
-           ?? payload.resource_href.split("/").pop()
+           ?? payload?.resource_href?.split("/").pop()
   await prisma.webhook_events.create({
     data: {
       event_id: payload.event_id,
@@ -239,7 +256,7 @@ const storeNewOrder = async (orderData: any, eventId: string) => {
         // console.log("menutitem", menuItem);
 
         // Step 2: Create CartItem (per order, per cart)
-        const cartItem = await tx.cartItem.create({
+        await tx.cartItem.create({
           data: {
             id: `${item.id}_${orderData.id}`, // ensures uniqueness per order
             title: item.title,

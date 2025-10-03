@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
       const stores= response?.stores
       // console.log("all stores",stores);
       const result = await Promise.all(
-        stores.map(async (store:any) => {
+        stores.map(async (store:{store_id:string, name:string}) => {
           const dat = await uberFetch(`/v1/delivery/store/${store.store_id}/orders?state=${state}&expand=${state?"carts":""}&page_size=${page_size}`);                
           return {
             store_name: store.name,
