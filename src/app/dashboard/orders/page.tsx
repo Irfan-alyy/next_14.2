@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { X, ChevronRight, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import OrderDetailModal from "./order_detail";
+import AlertList from "./NewOrdersList";
 
 // Hardcoded data from the provided JSON for demonstration purposes.
 // In a real app, this would be fetched from an API using getServerSideProps, Server Components, or client-side fetching.
@@ -203,6 +204,9 @@ const filteredStoresOrders = storesOrders ? storesOrders?.map((store:any) => ({
 
   return (
     <main className="min-h-screen font-serif" style={gradientBackground}>
+      <div className="w-00 fixed top-20 right-0">
+      <AlertList/>
+      </div>
       <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
         <header className="mb-8">
           <h1 className="text-5xl font-bold text-stone-800">Order History</h1>
