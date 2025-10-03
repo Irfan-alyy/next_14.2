@@ -1,9 +1,8 @@
 // app/api/webhook/route.ts
 import { prisma } from "@/lib/prisma";
-import { uberFetch } from "@/lib/uber";
+import { revalidatePath } from "next/cache"; 
 import { NextRequest } from "next/server";
 import { createHmac, timingSafeEqual } from "node:crypto";
-import { v4 as uuidv4 } from "uuid";
 
 // 🔥 Critical: Force this route to run in Node.js (not Edge)
 export const runtime = "nodejs";
@@ -81,6 +80,7 @@ const handleWebhook = async (payload: any) => {
     },
   });
 
+  revalidatePath("/dashboard")
   const event_type = payload?.event_type;
 
   console.log("event type", event_type);
