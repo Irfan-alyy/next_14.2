@@ -7,8 +7,7 @@ import {
   UtensilsCrossed,
   LogOut,
 } from "lucide-react";
-import EventContainer, { OrdersAlertSkeleton } from "./Events";
-import { Suspense } from "react";
+
 
 export default function DashboardPage() {
   const dashboardItems = [
@@ -51,11 +50,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen  " style={gradientBackground}>
       {/* Sidebar Navigation */}
-      <div className="w-00 fixed bottom-0 right-0">
-        <Suspense fallback={<OrdersAlertSkeleton />}>
-          <EventContainer />
-        </Suspense>
-      </div>
+      
       <div className="flex">
         <aside className="pt-20 w-64 bg-white p-6 shadow-xl flex flex-col justify-between">
           <div>
