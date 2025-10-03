@@ -40,7 +40,7 @@ export default function KitchenOrders() {
     }
   };
 
-  const handleUpdateStatus = async (storeId: string, orderId: string, newStatus: string) => {
+  const handleUpdateStatus = async (storeId: string, orderId: string, newStatus: "OFFERED" | "ACCEPTED" | "PREPARING" | "READY") => {
     try {
       await fetch(`/api/uber_eats/orders/${orderId}`,{
         method:"PATCH",
@@ -54,7 +54,7 @@ export default function KitchenOrders() {
             ? {
                 ...store,
                 orders: store.orders.map((order) =>
-                  order.id === orderId ? { ...order, state: newStatus as any } : order
+                  order.id === orderId ? { ...order, state: newStatus} : order
                 ),
               }
             : store

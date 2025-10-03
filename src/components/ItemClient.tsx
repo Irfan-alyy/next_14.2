@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 
 // TypeScript interfaces for the item data structure

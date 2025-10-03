@@ -66,15 +66,19 @@ export interface Order {
     charges: { total: { formatted_amount: string } };
   };
 }
+interface StoreOrders{
+orders:Array<Order>, 
+store_name:string,
+store_id:string
+ next_page_token:string
+}
 
 // Main OrdersPage component
 export default function OrdersPage() {
   const [filter, setFilter] = useState<
     "ALL" | "OFFERED" | "ACCEPTED" | "FAILED"
   >("ALL");
-  const [storesOrders, setStoresOrders] = useState<any>();
-  const [orders, setOrders] = useState<Array<Order>>([]);
-  const [nextPageToken, setNextPageToken] = useState(null);
+  const [storesOrders, setStoresOrders] = useState<Array<StoreOrders>>();
   const [showOrderDetailsModal, setShowOrderDetailsModal] = useState(false);
   const [currentOrderDetail, setCurrentOrderDetail] = useState<string | null>(
     null
@@ -95,8 +99,8 @@ export default function OrdersPage() {
       `/api/uber_eats/orders?store_id=${storeId}&page_size=10&next_page_token=${token}`
     );
     const dat = await res.json();
-    setStoresOrders((prev:any) =>
-      prev?.map((store: any) =>
+    setStoresOrders((prev) =>
+      prev?.map((store: StoreOrders) =>
         store.store_id === storeId
           ? { 
               ...store,
@@ -140,8 +144,8 @@ export default function OrdersPage() {
     if (response.ok) {
       showNotification(`${newState==="ACCEPTED"? "Accepted":"Rejected"} order ${orderId}`, "success");
       // Update the order state locally to reflect the change
-      const newOrders= storesOrders
-      newOrders.forEach(data=>{
+      const newOrders= storesOrders as Array<StoreOrders>
+      newOrders.forEach((data)=>{
         data.orders=data.orders.map(order=>order.id===orderId? {...order, state: newState}: order)
       })
       console.log("new orders after actions", newOrders);
@@ -177,7 +181,7 @@ export default function OrdersPage() {
 
 console.log(storesOrders);
   
-const filteredStoresOrders = storesOrders ? storesOrders?.map((store:any) => ({
+const filteredStoresOrders = storesOrders ? storesOrders?.map((store:StoreOrders) => ({
   ...store,
   orders:
     filter === "ALL"
@@ -262,7 +266,7 @@ const filteredStoresOrders = storesOrders ? storesOrders?.map((store:any) => ({
         {/* Orders by Store */}
         <div className="space-y-10">
           {filteredStoresOrders && filteredStoresOrders?.length > 0 ? (
-            filteredStoresOrders.map((store:any) => (
+            filteredStoresOrders.map((store:StoreOrders) => (
               <div key={store.store_id} className="space-y-6">
                 {/* Store Header */}
                 <h2 className="text-2xl font-bold text-stone-800 border-b pb-2">
