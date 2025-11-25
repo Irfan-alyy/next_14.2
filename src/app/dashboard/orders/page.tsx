@@ -5,69 +5,9 @@ import { X, ChevronRight, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import OrderDetailModal from "./order_detail";
 import AlertList from "./NewOrdersList";
-
-// Hardcoded data from the provided JSON for demonstration purposes.
-// In a real app, this would be fetched from an API using getServerSideProps, Server Components, or client-side fetching.
-
-// Order interface for type safety
-export interface Order {
-  id: string;
-  display_id: string;
-  state: string; // Changed from current_state to state
-  ordering_platform: string;
-  store: {
-    id: string;
-    name: string;
-    timezone: string;
-    partner_identifiers?: { value: string; type: string }[];
-  };
-  customers: {
-    id: string;
-    name: {
-      display_name: string;
-      first_name: string;
-      last_name: string;
-    };
-    contact: {
-      phone: {
-        number: string; // Adjust based on actual phone structure if needed
-      };
-    };
-    is_primary_customer: boolean;
-    can_respond_to_fulfillment_issues: boolean;
-    status: string;
-    order_history?: { past_order_count: number };
-  }[];
-  preparation_status: string;
-  estimated_unfulfilled_at: string;
-  is_order_accuracy_risk: boolean;
-  preparation_time: {
-    ready_for_pickup_time_secs: number;
-    source: string;
-    ready_for_pickup_time: string;
-  };
-  action_eligibility: {
-    adjust_ready_for_pickup_time: { is_eligible: boolean; reason: string };
-    mark_out_of_item: { is_eligible: boolean; reason: string };
-    cancel: { is_eligible: boolean; reason: string };
-    mark_cannot_fulfill: { is_eligible: boolean; reason: string };
-  };
-  fulfillment_type: string;
-  created_time: string;
-  has_membership_pass: boolean;
-  cart?: {
-    items: {
-      title: string;
-      quantity: number;
-      price: { total_price: { formatted_amount: string } };
-    }[];
-  };
-  payment?: {
-    charges: { total: { formatted_amount: string } };
-  };
-}
+import { UberOrder } from "@/types/uber_types";
 interface StoreOrders{
-orders:Array<Order>, 
+orders:Array<UberOrder>, 
 store_name:string,
 store_id:string
  next_page_token:string
@@ -186,7 +126,7 @@ const filteredStoresOrders = storesOrders ? storesOrders?.map((store:StoreOrders
   orders:
     filter === "ALL"
       ? store.orders
-      : store.orders.filter((o: Order) => o.state === filter)
+      : store.orders.filter((orders:UberOrder) => orders.current_state === filter)
 })): [];
 
   const gradientBackground = {
@@ -276,7 +216,7 @@ const filteredStoresOrders = storesOrders ? storesOrders?.map((store:StoreOrders
                 {/* Orders List */}
                 <div className="space-y-4">
                   {store.orders.length > 0 ? (
-                    store.orders.map((order: Order) => (
+                    store.orders.map((order: UberOrder) => (
                       <motion.div
                         key={order?.id}
                         className="bg-white rounded-2xl p-5 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center border border-stone-200"
@@ -291,19 +231,19 @@ const filteredStoresOrders = storesOrders ? storesOrders?.map((store:StoreOrders
                           </h3>
                           <div className="flex items-center space-x-2 text-xs text-stone-500 mb-2">
                             <span>
-                              {new Date(order?.created_time).toLocaleString()}
+                              {new Date(order?.placed_at).toLocaleString()}
                             </span>
                             <span
                               className={`px-2 py-0.5 rounded-full text-[11px] font-medium uppercase ${getStatusColor(
-                                order?.state
+                                order?.current_state
                               )}`}
                             >
-                              {order?.state}
+                              {order?.current_state}
                             </span>
                           </div>
                           <p className="text-sm text-stone-600">
                             Customer:{" "}
-                            {order?.customers?.[0]?.name?.display_name || "N/A"}
+                            {order?.eater?.first_name+" "+order?.eater?.last_name}
                           </p>
                         </div>
 
@@ -316,7 +256,7 @@ const filteredStoresOrders = storesOrders ? storesOrders?.map((store:StoreOrders
                             <ChevronRight size={18} className="mr-1" /> Details
                           </button>
 
-                          {order.state === "OFFERED" && (
+                          {order.current_state === "OFFERED" && (
                             <>
                               <button
                                 onClick={() => handleAction(order?.id, "ACCEPTED")}
