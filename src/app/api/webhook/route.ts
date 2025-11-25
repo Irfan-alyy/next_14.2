@@ -1,5 +1,6 @@
 // app/api/webhook/route.ts
 import { prisma } from "@/lib/prisma";
+import { UberOrder } from "@/types/uber_types";
 import { revalidatePath } from "next/cache"; 
 import { NextRequest } from "next/server";
 import { createHmac, timingSafeEqual } from "node:crypto";
@@ -158,7 +159,7 @@ const handleCreateOrder = async (id: string, eventId: string) => {
     });
 };
 
-const storeNewOrder = async (orderData: any, eventId: string) => {
+const storeNewOrder = async (orderData: UberOrder, eventId: string) => {
   console.log("store order", orderData);
   return prisma.$transaction(async (tx) => {
     // 1. Store
@@ -195,11 +196,11 @@ const storeNewOrder = async (orderData: any, eventId: string) => {
 
     // 3. Payment
     const paymentData = {
-      totalAmount: orderData.payment.charges.total.amount,
-      totalCurrency: orderData.payment.charges.total.currency_code,
-      subTotalAmount: orderData.payment.charges.sub_total.amount,
-      subTotalCurrency: orderData.payment.charges.sub_total.currency_code,
-      accounting: orderData.payment.accounting || {},
+      totalAmount: orderData?.payment?.charges.total.amount,
+      totalCurrency: orderData.payment?.charges.total.currency_code,
+      subTotalAmount: orderData.payment?.charges.sub_total.amount,
+      subTotalCurrency: orderData.payment?.charges.sub_total.currency_code,
+      accounting: orderData.payment?.accounting || {},
     };
     const payment = await tx.payment.upsert({
       where: { id: `payment_${orderData.id}` },
