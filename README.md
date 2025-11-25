@@ -1,8 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js App with Prisma, NextAuth & MongoDB
 
-## Getting Started
+This project is a modern full-stack application built using:
 
-First, run the development server:
+* **Next.js (App Router)**
+* **Prisma ORM**
+* **MongoDB (as the database)**
+* **NextAuth.js (Authentication)**
+* **TypeScript**
+
+It provides a ready-to-use setup for full-stack development with authentication and database access.
+
+---
+
+## 🚀 Getting Started
+
+### 1. **Install Dependencies**
+
+```bash
+npm install
+# or
+yarn
+# or
+pnpm install
+# or
+bun install
+```
+
+---
+
+## ⚙️ Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+DATABASE_URL="mongodb+srv://<username>:<password>@cluster.mongodb.net/<dbname>?retryWrites=true&w=majority"
+
+NEXTAUTH_SECRET="<YourRandomSecret>"
+NEXTAUTH_URL="http://localhost:3000"
+
+# For providers (optional):
+GITHUB_ID=""
+GITHUB_SECRET=""
+GOOGLE_CLIENT_ID=""
+GOOGLE_CLIENT_SECRET=""
+```
+
+Generate a secure NextAuth secret:
+
+```bash
+npx auth secret
+```
+
+---
+
+## 🗄️ Prisma Setup
+
+### 1. **Initialize Prisma (already done if project contains schema.prisma)**
+
+```bash
+npx prisma init
+```
+
+### 2. **Push Prisma Schema to MongoDB**
+
+```bash
+npx prisma db push
+```
+
+### 3. **Open Prisma Studio**
+
+```bash
+npx prisma studio
+```
+
+---
+
+## 🔐 NextAuth Configuration
+
+This project uses **NextAuth (App Router)** with Prisma Adapter and MongoDB.
+
+The main configuration file is stored at:
+
+```
+app/api/auth/[...nextauth]/route.ts,
+src/lib/auth.ts
+```
+
+You can add providers such as GitHub, Google, Credentials, etc.
+
+---
+
+## ▶️ Run the Development Server
 
 ```bash
 npm run dev
@@ -14,23 +102,54 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit your app at:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+👉 [http://localhost:3000](http://localhost:3000)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 📂 Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+app/
+ ├── api/
+ │    └── auth/
+ │         └── [...nextauth]/route.ts   // NextAuth configuration
+           ---- 
+ ├── page.tsx                            // Main page
+ └── layout.tsx                          // Root layout
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+prisma/
+ └── schema.prisma                       // Prisma schema with MongoDB provider
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+lib/
+ ├── auth.ts                              // Auth configurations/helpers
+ └── prisma.ts                            // Prisma Client instance
 
-## Deploy on Vercel
+.env                                      // Environment variables
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📘 Learn More
+
+* **Next.js Documentation** – [https://nextjs.org/docs](https://nextjs.org/docs)
+* **Prisma Documentation** – [https://www.prisma.io/docs](https://www.prisma.io/docs)
+* **NextAuth.js Documentation** – [https://next-auth.js.org](https://next-auth.js.org)
+* **MongoDB Atlas** – [https://www.mongodb.com/atlas](https://www.mongodb.com/atlas)
+
+---
+
+## 🚀 Deployment
+
+The easiest deployment platform for Next.js + Prisma + MongoDB:
+
+### **Vercel**
+
+* Connect your GitHub repo
+* Add `.env` variables in Vercel dashboard
+* Use MongoDB Atlas as your database
+
+### Prisma Best Practice for Vercel
+
+Prisma Client is automatically optimized for serverless environments.

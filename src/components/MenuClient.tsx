@@ -12,8 +12,9 @@ interface Translation {
 interface Item {
   id: string;
   title: { translations: Translation };
-  subtitle: { translations: Translation };
+  description: { translations: Translation };
   price_info: { price: number };
+  image_url:string
 }
 
 interface CategoryEntity {
@@ -58,6 +59,8 @@ const itemVariants = {
 
 export default function MenuClient({ storeId, menu, error }: MenuClientProps) {
   const { data } = useSession();
+  console.log("menu item", menu);
+  
   return (
     <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
       {/* Back to restaurants link */}
@@ -159,7 +162,7 @@ export default function MenuClient({ storeId, menu, error }: MenuClientProps) {
                           <div className="flex items-start gap-6">
                             <div className="w-24 h-24 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden">
                               <span className="text-gray-300 text-xs italic font-sans flex items-center justify-center h-full">
-                                Item
+                               <img src={item?.image_url|| ""} alt="image" />
                               </span>
                             </div>
                             <div className="flex-1">
@@ -174,7 +177,7 @@ export default function MenuClient({ storeId, menu, error }: MenuClientProps) {
                                 )}
                               </div>
                               <p className="text-stone-600 font-sans text-sm italic mb-4">
-                                {item.subtitle?.translations?.en_us ||
+                                {item.description?.translations?.en_us ||
                                   "A delicious dish to tempt your senses."}
                               </p>
                               <Link

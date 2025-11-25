@@ -1,0 +1,572 @@
+{
+    "menu": {
+        "menus": [
+            {
+                "id": "All-day",
+                "title": {
+                    "translations": {
+                        "en_us": "All day"
+                    }
+                },
+                "service_availability": [
+                    {
+                        "day_of_week": "monday",
+                        "time_periods": [
+                            {
+                                "start_time": "00:00",
+                                "end_time": "23:59"
+                            }
+                        ]
+                    },
+                    {
+                        "day_of_week": "tuesday",
+                        "time_periods": [
+                            {
+                                "start_time": "00:00",
+                                "end_time": "23:59"
+                            }
+                        ]
+                    },
+                    {
+                        "day_of_week": "wednesday",
+                        "time_periods": [
+                            {
+                                "start_time": "00:00",
+                                "end_time": "23:59"
+                            }
+                        ]
+                    },
+                    {
+                        "day_of_week": "thursday",
+                        "time_periods": [
+                            {
+                                "start_time": "00:00",
+                                "end_time": "23:59"
+                            }
+                        ]
+                    },
+                    {
+                        "day_of_week": "friday",
+                        "time_periods": [
+                            {
+                                "start_time": "00:00",
+                                "end_time": "23:59"
+                            }
+                        ]
+                    },
+                    {
+                        "day_of_week": "saturday",
+                        "time_periods": [
+                            {
+                                "start_time": "00:00",
+                                "end_time": "23:59"
+                            }
+                        ]
+                    },
+                    {
+                        "day_of_week": "sunday",
+                        "time_periods": [
+                            {
+                                "start_time": "00:00",
+                                "end_time": "23:59"
+                            }
+                        ]
+                    }
+                ],
+                "category_ids": [
+                    "Sandwiches",
+                    "Snacks",
+                    "Drinks"
+                ]
+            }
+        ],
+        "categories": [
+            {
+                "id": "Drinks",
+                "title": {
+                    "translations": {
+                        "en_us": "Drinks"
+                    }
+                },
+                "entities": [
+                    {
+                        "id": "Coffee"
+                    },
+                    {
+                        "id": "Tea"
+                    }
+                ]
+            },
+            {
+                "id": "Snacks",
+                "title": {
+                    "translations": {
+                        "en_us": "Snacks"
+                    }
+                },
+                "entities": [
+                    {
+                        "id": "Muffin"
+                    }
+                ]
+            },
+            {
+                "id": "Sandwiches",
+                "title": {
+                    "translations": {
+                        "en_us": "Sandwiches"
+                    }
+                },
+                "entities": [
+                    {
+                        "id": "sanwidepollo"
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "id": "Milk",
+                "external_data": "External data for milk",
+                "title": {
+                    "translations": {
+                        "en_us": "Milk"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "en_us": ""
+                    }
+                },
+                "price_info": {
+                    "price": 0,
+                    "overrides": [
+                        {
+                            "context_type": "MODIFIER_GROUP",
+                            "context_value": "Add-milk",
+                            "price": 0
+                        }
+                    ]
+                },
+                "quantity_info": {
+                    "overrides": [
+                        {
+                            "context_type": "MODIFIER_GROUP",
+                            "context_value": "Add-milk",
+                            "quantity": {
+                                "max_permitted": 1
+                            }
+                        }
+                    ]
+                },
+                "tax_info": {
+                    "tax_rate": 8
+                },
+                "nutritional_info": {
+                    "allergens": null
+                },
+                "dish_info": {
+                    "classifications": {
+                        "ingredients": null,
+                        "additives": null
+                    }
+                },
+                "product_info": {
+                    "product_traits": null,
+                    "countries_of_origin": null
+                },
+                "bundled_items": null
+            },
+            {
+                "id": "sanwidepollo",
+                "external_data": "External data for chicken sandwich",
+                "title": {
+                    "translations": {
+                        "en_us": "Chicken sandwich"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "en_us": "Whole grain bread, grilled chicken and salad"
+                    }
+                },
+                "image_url": "https://images.pexels.com/photos/1633525/pexels-photo-1633525.jpeg",
+                "price_info": {
+                    "price": 700,
+                    "overrides": []
+                },
+                "tax_info": {
+                    "tax_rate": 8
+                },
+                "nutritional_info": {
+                    "allergens": null
+                },
+                "dish_info": {
+                    "classifications": {
+                        "ingredients": null,
+                        "additives": null
+                    }
+                },
+                "product_info": {
+                    "product_traits": null,
+                    "countries_of_origin": null
+                },
+                "bundled_items": null
+            },
+            {
+                "id": "Tea",
+                "external_data": "External data for tea",
+                "title": {
+                    "translations": {
+                        "en_us": "Tea"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "en_us": "A soothing cuppa"
+                    }
+                },
+                "image_url": "https://images.pexels.com/photos/1581484/pexels-photo-1581484.jpeg",
+                "price_info": {
+                    "price": 250,
+                    "overrides": []
+                },
+                "modifier_group_ids": {
+                    "ids": [
+                        "Add-milk",
+                        "Add-sugar"
+                    ],
+                    "overrides": []
+                },
+                "tax_info": {
+                    "tax_rate": 8
+                },
+                "nutritional_info": {
+                    "allergens": null
+                },
+                "dish_info": {
+                    "classifications": {
+                        "ingredients": null,
+                        "additives": null
+                    }
+                },
+                "product_info": {
+                    "product_traits": null,
+                    "countries_of_origin": null
+                },
+                "bundled_items": null
+            },
+            {
+                "id": "Sugar",
+                "external_data": "External data for sugar",
+                "title": {
+                    "translations": {
+                        "en_us": "Sugar"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "en_us": ""
+                    }
+                },
+                "price_info": {
+                    "price": 0,
+                    "overrides": [
+                        {
+                            "context_type": "MODIFIER_GROUP",
+                            "context_value": "Add-sugar",
+                            "price": 0
+                        }
+                    ]
+                },
+                "quantity_info": {
+                    "overrides": [
+                        {
+                            "context_type": "MODIFIER_GROUP",
+                            "context_value": "Add-sugar",
+                            "quantity": {
+                                "max_permitted": 2
+                            }
+                        }
+                    ]
+                },
+                "tax_info": {
+                    "tax_rate": 8
+                },
+                "nutritional_info": {
+                    "allergens": null
+                },
+                "dish_info": {
+                    "classifications": {
+                        "ingredients": null,
+                        "additives": null
+                    }
+                },
+                "product_info": {
+                    "product_traits": null,
+                    "countries_of_origin": null
+                },
+                "bundled_items": null
+            },
+            {
+                "id": "Chocolate-deluxe",
+                "external_data": "External data for chocolate deluxe flavor",
+                "title": {
+                    "translations": {
+                        "en_us": "Chocolate deluxe"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "en_us": ""
+                    }
+                },
+                "price_info": {
+                    "price": 50,
+                    "overrides": [
+                        {
+                            "context_type": "MODIFIER_GROUP",
+                            "context_value": "Choose-flavor",
+                            "price": 50
+                        }
+                    ]
+                },
+                "quantity_info": {
+                    "overrides": [
+                        {
+                            "context_type": "MODIFIER_GROUP",
+                            "context_value": "Choose-flavor",
+                            "quantity": {
+                                "max_permitted": 1
+                            }
+                        }
+                    ]
+                },
+                "tax_info": {
+                    "tax_rate": 8
+                },
+                "nutritional_info": {
+                    "allergens": null
+                },
+                "dish_info": {
+                    "classifications": {
+                        "ingredients": null,
+                        "additives": null
+                    }
+                },
+                "product_info": {
+                    "product_traits": null,
+                    "countries_of_origin": null
+                },
+                "bundled_items": null
+            },
+            {
+                "id": "Blueberry",
+                "external_data": "External data for blueberry flavor",
+                "title": {
+                    "translations": {
+                        "en_us": "Blueberry"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "en_us": ""
+                    }
+                },
+                "price_info": {
+                    "price": 0,
+                    "overrides": [
+                        {
+                            "context_type": "MODIFIER_GROUP",
+                            "context_value": "Choose-flavor",
+                            "price": 0
+                        }
+                    ]
+                },
+                "quantity_info": {
+                    "overrides": [
+                        {
+                            "context_type": "MODIFIER_GROUP",
+                            "context_value": "Choose-flavor",
+                            "quantity": {
+                                "max_permitted": 1
+                            }
+                        }
+                    ]
+                },
+                "tax_info": {
+                    "tax_rate": 8
+                },
+                "nutritional_info": {
+                    "allergens": null
+                },
+                "dish_info": {
+                    "classifications": {
+                        "ingredients": null,
+                        "additives": null
+                    }
+                },
+                "product_info": {
+                    "product_traits": null,
+                    "countries_of_origin": null
+                },
+                "bundled_items": null
+            },
+            {
+                "id": "Muffin",
+                "external_data": "External data for muffin",
+                "title": {
+                    "translations": {
+                        "en_us": "Fresh-baked muffin"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "en_us": "Great for afternoon snack time!"
+                    }
+                },
+                "image_url": "https://images.pexels.com/photos/1657343/pexels-photo-1657343.jpeg",
+                "price_info": {
+                    "price": 300,
+                    "overrides": []
+                },
+                "modifier_group_ids": {
+                    "ids": [
+                        "Choose-flavor"
+                    ],
+                    "overrides": []
+                },
+                "tax_info": {
+                    "tax_rate": 8
+                },
+                "nutritional_info": {
+                    "allergens": null
+                },
+                "dish_info": {
+                    "classifications": {
+                        "ingredients": null,
+                        "additives": null
+                    }
+                },
+                "product_info": {
+                    "product_traits": null,
+                    "countries_of_origin": null
+                },
+                "bundled_items": null
+            },
+            {
+                "id": "Coffee",
+                "external_data": "External data for coffee",
+                "title": {
+                    "translations": {
+                        "en_us": "Coffee"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "en_us": "Deliciously roasted beans"
+                    }
+                },
+                "image_url": "https://images.pexels.com/photos/414630/pexels-photo-414630.jpeg",
+                "price_info": {
+                    "price": 300,
+                    "overrides": []
+                },
+                "modifier_group_ids": {
+                    "ids": [
+                        "Add-milk",
+                        "Add-sugar"
+                    ],
+                    "overrides": []
+                },
+                "tax_info": {
+                    "tax_rate": 8
+                },
+                "nutritional_info": {
+                    "allergens": null
+                },
+                "dish_info": {
+                    "classifications": {
+                        "ingredients": null,
+                        "additives": null
+                    }
+                },
+                "product_info": {
+                    "product_traits": null,
+                    "countries_of_origin": null
+                },
+                "bundled_items": null
+            }
+        ],
+        "modifier_groups": [
+            {
+                "id": "Add-milk",
+                "external_data": "External data for milk choice",
+                "title": {
+                    "translations": {
+                        "en_us": "Add milk"
+                    }
+                },
+                "quantity_info": {
+                    "quantity": {
+                        "max_permitted": 1
+                    },
+                    "overrides": []
+                },
+                "modifier_options": [
+                    {
+                        "id": "Milk",
+                        "type": "ITEM"
+                    }
+                ]
+            },
+            {
+                "id": "Add-sugar",
+                "external_data": "External data for sugar choice",
+                "title": {
+                    "translations": {
+                        "en_us": "Add sugar"
+                    }
+                },
+                "quantity_info": {
+                    "quantity": {
+                        "max_permitted": 2
+                    },
+                    "overrides": []
+                },
+                "modifier_options": [
+                    {
+                        "id": "Sugar",
+                        "type": "ITEM"
+                    }
+                ]
+            },
+            {
+                "id": "Choose-flavor",
+                "external_data": "External data for muffin flavor choice",
+                "title": {
+                    "translations": {
+                        "en_us": "Choose flavor"
+                    }
+                },
+                "quantity_info": {
+                    "quantity": {
+                        "min_permitted": 1,
+                        "max_permitted": 1
+                    },
+                    "overrides": []
+                },
+                "modifier_options": [
+                    {
+                        "id": "Blueberry",
+                        "type": "ITEM"
+                    },
+                    {
+                        "id": "Chocolate-deluxe",
+                        "type": "ITEM"
+                    }
+                ]
+            }
+        ]
+    }
+}

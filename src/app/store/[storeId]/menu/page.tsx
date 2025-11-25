@@ -8,8 +8,9 @@ interface Translation {
 interface Item {
   id: string;
   title: { translations: Translation };
-  subtitle: { translations: Translation };
+  description: { translations: Translation };
   price_info: { price: number };
+  image_url:string
 }
 
 interface CategoryEntity {

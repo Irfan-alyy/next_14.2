@@ -44,13 +44,13 @@ function OrderDetailModal({ orderId, isOpen, onClose }: { orderId: string | null
   if (!isOpen || !orderId) return null;
 
   const formatDate = (isoString: string) => {
-    return new Date(isoString).toLocaleString("en-GB", {
+    return isoString? new Date(isoString).toLocaleString("en-GB", {
       day: "2-digit",
       month: "short",
       year: "numeric",
       hour: "2-digit",
       minute: "2-digit",
-    });
+    }):"N/A";
   };
   
   const modalVariants = {
