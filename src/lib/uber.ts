@@ -1,5 +1,5 @@
 export async function uberFetch(path:string) {
-  console.log("Uber Api Call:",path);
+  // console.log("Uber Api Call:",path);
   
   const res = await fetch(`${process.env.UBER_API_BASE}${path}`, {
     headers: {
