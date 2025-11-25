@@ -35,7 +35,7 @@ export default function AlertList() {
       setLoading(false);
     }
   };
-  const eventMap = {
+  const eventMap:{[key:string]:string} = {
     ["orders.notification"]: "New Order",
     ["orders.cancel"]: "Order Cancled",
     ["delivery.state_changed"]: "Delivery Status",
@@ -82,7 +82,7 @@ export default function AlertList() {
   if (error) return <div className="text-red-500">{error}</div>;
 
   return (
-    <div className="bg-white border  border-gray-200 rounded-lg shadow-sm h-80 overflow-y-auto p-4 relative">
+    <div className="bg-white border  border-gray-200 rounded-lg shadow-sm h-50 overflow-y-auto p-4 relative">
       <ToastContainer
         autoClose={660000}
         className="mt-[70px]"
